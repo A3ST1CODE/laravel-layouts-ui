@@ -5,6 +5,7 @@ namespace a3stic0de\LayoutsUI;
 use Illuminate\Support\ServiceProvider;
 use a3stic0de\LayoutsUI\Console\Commands\GenerateLayouts;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use ZipArchive;
 
 class LayoutsServiceProvider extends ServiceProvider
@@ -13,12 +14,12 @@ class LayoutsServiceProvider extends ServiceProvider
     {
         // Publish views
         $this->publishes([
-            __DIR__.'/Views/layout' => resource_path('views/layouts'),
+            __DIR__ . '/Views/layout' => resource_path('views/layouts'),
         ], 'layouts');
 
         // Publish and extract assets
         $this->publishes([
-            __DIR__.'/assets.zip' => public_path('assets.zip'),
+            __DIR__ . '/assets.zip' => public_path('assets.zip'),
         ], 'assets');
 
         // Extract assets if running in console
@@ -51,14 +52,14 @@ class LayoutsServiceProvider extends ServiceProvider
                 $zip->extractTo($extractPath);
                 $zip->close();
 
-                File::delete($zipPath); // Hapus file zip setelah diekstrak
+                File::delete($zipPath); // Delete zip file after extraction
 
-                $this->info('Assets extracted successfully to ' . $extractPath);
+                Log::info('Assets extracted successfully to ' . $extractPath);
             } else {
-                $this->error('Failed to open assets.zip');
+                Log::error('Failed to open assets.zip');
             }
         } else {
-            $this->error('assets.zip not found in public folder.');
+            Log::error('assets.zip not found in public folder.');
         }
     }
 }
