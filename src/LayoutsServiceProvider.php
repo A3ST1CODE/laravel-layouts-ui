@@ -38,20 +38,27 @@ class LayoutsServiceProvider extends ServiceProvider
 
     protected function extractAssets()
     {
-        $zipPath = __DIR__.'/assets.zip';
+        $zipPath = public_path('assets.zip');
         $extractPath = public_path('assets');
 
         if (File::exists($zipPath)) {
             $zip = new ZipArchive;
-            if ($zip->open($zipPath) {
+            if ($zip->open($zipPath)) {
+                if (!File::exists($extractPath)) {
+                    File::makeDirectory($extractPath, 0755, true);
+                }
+
                 $zip->extractTo($extractPath);
                 $zip->close();
+
+                File::delete($zipPath); // Hapus file zip setelah diekstrak
+
                 $this->info('Assets extracted successfully to ' . $extractPath);
             } else {
                 $this->error('Failed to open assets.zip');
             }
         } else {
-            $this->error('assets.zip not found in package.');
+            $this->error('assets.zip not found in public folder.');
         }
     }
 }
