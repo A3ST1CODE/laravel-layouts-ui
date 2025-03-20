@@ -2,6 +2,7 @@
 	"name": "a3stic0de/laravel-layouts-ui",
 	"description": "A Laravel package to generate reusable layouts.",
 	"type": "library",
+	"license": "MIT",
 	"require": {
 		"php": "^7.3|^8.0",
 		"illuminate/support": "^8.0|^9.0"
